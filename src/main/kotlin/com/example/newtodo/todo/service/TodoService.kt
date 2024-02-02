@@ -1,5 +1,7 @@
 package com.example.newtodo.todo.service
 
+import com.example.newtodo.common.exception.BaseException
+import com.example.newtodo.common.exception.base.BaseResponseCode
 import com.example.newtodo.todo.dto.ModifyTodoRequest
 import com.example.newtodo.todo.dto.TodoRequest
 import com.example.newtodo.todo.dto.TodoResponse
@@ -19,7 +21,7 @@ class TodoService(
 ) {
     //1. 할일 전체 조회
     fun getTodoList(todoCardId: Long): List<TodoResponse> {
-        val todo = todoRepository.findAllByTodoCardId(todoCardId) ?: throw IllegalArgumentException("대상 없음")
+        val todo = todoRepository.findAllByTodoCardId(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
         return todo.map { TodoResponse.from(it) }
     }
 
@@ -32,7 +34,7 @@ class TodoService(
      */
     //2. 할일 하나 조회 & 하나 조회 시 댓글 출력
     fun getTodo(todoCardId: Long, todoId: Long): TodoResponse {
-        val todo = todoRepository.findByIdOrNull(todoId) ?: throw IllegalArgumentException("대상 없음")
+        val todo = todoRepository.findByIdOrNull(todoId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
         return if (todo.todoCard.id==todoCardId) {
             todo.let { TodoResponse.from(it) }
         }
@@ -51,7 +53,7 @@ class TodoService(
         todoCardId: Long,
         request: TodoRequest
     ): TodoResponse {
-        val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw IllegalArgumentException("대상 없음")
+        val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
         val todo = Todo(
             title = request.title,
             content = request.content,
@@ -68,7 +70,7 @@ class TodoService(
         todoId: Long,
         request: ModifyTodoRequest
     ) : TodoResponse {
-        val todo = todoRepository.findByIdOrNull(todoId) ?: throw IllegalArgumentException("대상 없음")
+        val todo = todoRepository.findByIdOrNull(todoId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
         todo.modify(request)
         return todo.let { TodoResponse.from(it) }
     }
@@ -79,7 +81,7 @@ class TodoService(
         todoCardId: Long,
         todoId: Long
     ) {
-        val todo = todoRepository.findByIdOrNull(todoId) ?: throw IllegalArgumentException("대상 없음")
+        val todo = todoRepository.findByIdOrNull(todoId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
         return if (todoCardId==todo.todoCard.id){
             todoRepository.delete(todo)
         }

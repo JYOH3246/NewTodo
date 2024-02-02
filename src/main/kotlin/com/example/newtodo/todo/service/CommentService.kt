@@ -1,5 +1,7 @@
 package com.example.newtodo.todo.service
 
+import com.example.newtodo.common.exception.BaseException
+import com.example.newtodo.common.exception.base.BaseResponseCode
 import com.example.newtodo.todo.dto.CommentRequest
 import com.example.newtodo.todo.dto.CommentResponse
 import com.example.newtodo.todo.entity.Comment
@@ -13,11 +15,11 @@ import org.springframework.stereotype.Service
 class CommentService(
     private val commentRepository: CommentRepository,
     private val todoRepository: TodoRepository
-){
+) {
     //1. 댓글 전체 조회
-    fun getCommentList(todoCardId:Long, todoId: Long): List<CommentResponse> {
-        val comment = commentRepository.findAllByTodoId(todoId) ?: throw IllegalArgumentException("존재하지 않음")
-        todoRepository.findByIdOrNull(todoCardId)?: throw IllegalArgumentException("존재하지 않음")
+    fun getCommentList(todoCardId: Long, todoId: Long): List<CommentResponse> {
+        val comment = commentRepository.findAllByTodoId(todoId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
+        todoRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
         return comment.map { CommentResponse.from(it) }
     }
 
@@ -28,9 +30,9 @@ class CommentService(
         todoId: Long,
         request: CommentRequest
     ): CommentResponse {
-        val todo = todoRepository.findByIdOrNull(todoCardId)?: throw IllegalArgumentException("존재하지 않음")
-        val comment = Comment (
-            content=request.content,
+        val todo = todoRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
+        val comment = Comment(
+            content = request.content,
             todo = todo
         )
         return commentRepository.save(comment).let { CommentResponse.from(it) }
@@ -44,7 +46,7 @@ class CommentService(
         commentId: Long,
         request: CommentRequest
     ): CommentResponse {
-        val comment = commentRepository.findByIdOrNull(commentId)?: throw IllegalArgumentException("존재하지 않음")
+        val comment = commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
         comment.content = request.content
         return comment.let { CommentResponse.from(it) }
     }
@@ -56,7 +58,7 @@ class CommentService(
         todoId: Long,
         commentId: Long
     ) {
-        val comment = commentRepository.findByIdOrNull(commentId)?: throw IllegalArgumentException("존재하지 않음")
+        val comment = commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
         commentRepository.delete(comment)
     }
 }
