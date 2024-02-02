@@ -24,8 +24,8 @@ class TodoCardService(
   }
    */
     //2. 단건조회
-    fun getTodoCard(id: Long): TodoCardResponse {
-        val todoCard = todoCardRepository.findByIdOrNull(id) ?: throw IllegalArgumentException("존재하지 않는 id")
+    fun getTodoCard(todoCardId: Long): TodoCardResponse {
+        val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw IllegalArgumentException("존재하지 않는 id")
         return todoCard.let { TodoCardResponse.from(it) }
     }
 
@@ -54,9 +54,12 @@ class TodoCardService(
      */
     //4. 할일카드 수정하기
     @Transactional
-    fun modifyTodoCard(id: Long, request: TodoCardRequest): TodoCardResponse {
-        val todoCard = todoCardRepository.findByIdOrNull(id) ?: throw IllegalArgumentException("존재하지 않음")
-        todoCard.title = request.title
+    fun modifyTodoCard(
+        todoCardId: Long,
+        request: TodoCardRequest
+    ): TodoCardResponse {
+        val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw IllegalArgumentException("존재하지 않음")
+
         return todoCard.let { TodoCardResponse.from(it) }
 
     }
@@ -72,9 +75,9 @@ class TodoCardService(
      */
     //5. 할일카드 삭제하기
     @Transactional
-    fun deleteTodoCard(id: Long) {
-        val todoCard = todoCardRepository.findByIdOrNull(id) ?: throw IllegalArgumentException("존재하지 않음")
-        todoCardRepository.deleteById(id)
+    fun deleteTodoCard(todoCardId: Long) {
+        val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw IllegalArgumentException("존재하지 않음")
+        todoCardRepository.delete(todoCard)
     }
     /*
     할일카드를 가져오고
