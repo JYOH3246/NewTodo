@@ -1,5 +1,6 @@
 package com.example.newtodo.todo.entity
 
+import com.example.newtodo.common.audit.BaseTimeEntity
 import com.example.newtodo.todo.dto.ModifyTodoRequest
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
@@ -21,7 +22,7 @@ class Todo(
     @OneToMany(mappedBy="todo",fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     @JsonIgnore
     var comments : MutableList<Comment> = mutableListOf()
-) {
+) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
