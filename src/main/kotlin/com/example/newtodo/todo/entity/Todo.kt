@@ -18,7 +18,7 @@ class Todo(
     @JoinColumn(name = "todoCardId")
     val todoCard: TodoCard,
     // 요구사항 : 댓글이 들어가면, 양방향 참조가 생길 것 같다!
-    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(mappedBy="todo",fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
     @JsonIgnore
     var comments : MutableList<Comment> = mutableListOf()
 ) {
