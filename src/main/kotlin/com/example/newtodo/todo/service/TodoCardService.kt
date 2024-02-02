@@ -1,5 +1,7 @@
 package com.example.newtodo.todo.service
 
+import com.example.newtodo.common.exception.BaseException
+import com.example.newtodo.common.exception.base.BaseResponseCode
 import com.example.newtodo.todo.dto.TodoCardRequest
 import com.example.newtodo.todo.dto.TodoCardResponse
 import com.example.newtodo.todo.entity.TodoCard
@@ -21,12 +23,12 @@ class TodoCardService(
   함수 할일카드전체조회(){
       할일카드 리스트를 리포지토리에서 가져오고
       할일카드 리스트를 리턴
-      t
   }
    */
     //2. 단건조회
     fun getTodoCard(todoCardId: Long): TodoCardResponse {
-        val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw IllegalArgumentException("존재하지 않는 id")
+        val todoCard =
+            todoCardRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
         return todoCard.let { TodoCardResponse.from(it) }
     }
 
@@ -59,7 +61,8 @@ class TodoCardService(
         todoCardId: Long,
         request: TodoCardRequest
     ): TodoCardResponse {
-        val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw IllegalArgumentException("존재하지 않음")
+        val todoCard =
+            todoCardRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
         todoCard.title = request.title
         return todoCard.let { TodoCardResponse.from(it) }
 
@@ -77,7 +80,8 @@ class TodoCardService(
     //5. 할일카드 삭제하기
     @Transactional
     fun deleteTodoCard(todoCardId: Long) {
-        val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw IllegalArgumentException("존재하지 않음")
+        val todoCard =
+            todoCardRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
         todoCardRepository.delete(todoCard)
     }
     /*
