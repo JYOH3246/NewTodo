@@ -3,7 +3,6 @@ package com.example.newtodo.todo.controller
 import com.example.newtodo.todo.dto.ModifyTodoRequest
 import com.example.newtodo.todo.dto.TodoRequest
 import com.example.newtodo.todo.dto.TodoResponse
-import com.example.newtodo.todo.entity.Todo
 import com.example.newtodo.todo.service.TodoService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -60,7 +59,7 @@ class TodoController (
     fun deleteTodo(
         @PathVariable todoCardId: Long,
         @PathVariable todoId: Long
-    ): ResponseEntity<TodoResponse> {
+    ): ResponseEntity<Unit> {
         todoService.deleteTodo(todoCardId,todoId)
         return status(HttpStatus.NO_CONTENT).build()
     }

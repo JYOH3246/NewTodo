@@ -59,7 +59,7 @@ class TodoCardService(
         request: TodoCardRequest
     ): TodoCardResponse {
         val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw IllegalArgumentException("존재하지 않음")
-
+        todoCard.title = request.title
         return todoCard.let { TodoCardResponse.from(it) }
 
     }

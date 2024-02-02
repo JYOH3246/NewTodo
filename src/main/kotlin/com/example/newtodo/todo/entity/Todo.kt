@@ -1,6 +1,7 @@
 package com.example.newtodo.todo.entity
 
 import com.example.newtodo.todo.dto.ModifyTodoRequest
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
@@ -15,8 +16,11 @@ class Todo(
     var status: TodoStatus,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todoCardId")
-    val todoCard: TodoCard
+    val todoCard: TodoCard,
     // 요구사항 : 댓글이 들어가면, 양방향 참조가 생길 것 같다!
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JsonIgnore
+    var comments : MutableList<Comment> = mutableListOf()
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

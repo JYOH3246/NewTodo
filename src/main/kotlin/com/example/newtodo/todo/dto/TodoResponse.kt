@@ -1,13 +1,13 @@
 package com.example.newtodo.todo.dto
 
 import com.example.newtodo.todo.entity.Todo
-import com.example.newtodo.todo.entity.TodoStatus
 
 data class TodoResponse (
     val id : Long?,
     val title : String,
     val content : String,
-    val status :String
+    val status :String,
+    val comment: List<CommentResponse>
 )
 {
     companion object {
@@ -16,7 +16,8 @@ data class TodoResponse (
                 id = todo.id,
                 title = todo.title,
                 content = todo.content,
-                status = todo.status.name
+                status = todo.status.name,
+                comment = todo.comments.map { CommentResponse.from(it) }
             )
         }
     }
