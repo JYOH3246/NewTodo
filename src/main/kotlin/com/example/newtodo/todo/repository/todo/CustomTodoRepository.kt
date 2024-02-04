@@ -1,7 +1,9 @@
 package com.example.newtodo.todo.repository.todo
 
 import com.example.newtodo.todo.entity.Todo
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 interface CustomTodoRepository {
-    fun searchTodoListByTitle(title: String): List<Todo>
+    fun searchTodoListByTitleWithPageable(pageable: Pageable, title: String): Page<Todo>
 }

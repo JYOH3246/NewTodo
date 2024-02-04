@@ -12,6 +12,8 @@ import com.example.newtodo.todo.entity.modify
 import com.example.newtodo.todo.repository.TodoCardRepository
 import com.example.newtodo.todo.repository.todo.TodoRepository
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -92,12 +94,13 @@ class TodoService(
     //6. 할일 검색하기
     fun searchTodo(
         todoCardId: Long,
-        title: String
-    ): List<TodoResponse> {
+        title: String,
+        pageable: Pageable
+    ): Page<TodoResponse> {
         val todo = todoRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
         return if (todoCardId == todo.todoCard.id) {
             todoRepository
-                .searchTodoListByTitle(title)
+                .searchTodoListByTitleWithPageable(pageable, title)
                 .map { TodoResponse.from(it) }
         } else throw IllegalArgumentException("대상 없음")
     }

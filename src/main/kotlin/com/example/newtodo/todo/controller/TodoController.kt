@@ -4,6 +4,9 @@ import com.example.newtodo.todo.dto.ModifyTodoRequest
 import com.example.newtodo.todo.dto.TodoRequest
 import com.example.newtodo.todo.dto.TodoResponse
 import com.example.newtodo.todo.service.TodoService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.status
@@ -64,10 +67,11 @@ class TodoController(
     //6. 할일 검색하기
     @GetMapping
     fun searchTodo(
+        @PageableDefault(size = 3, sort = ["id"]) pageable: Pageable,
         @PathVariable todoCardId: Long,
         @RequestParam(name = "title") title: String
-    ): ResponseEntity<List<TodoResponse>> {
-        return status(HttpStatus.OK).body(todoService.searchTodo(todoCardId, title))
+    ): ResponseEntity<Page<TodoResponse>> {
+        return status(HttpStatus.OK).body(todoService.searchTodo(todoCardId, title, pageable))
 
     }
 
