@@ -1,5 +1,6 @@
 package com.example.newtodo.todo.service
 
+import com.example.newtodo.common.aop.StopWatch
 import com.example.newtodo.common.exception.BaseException
 import com.example.newtodo.common.exception.base.BaseResponseCode
 import com.example.newtodo.todo.dto.ModifyTodoRequest
@@ -9,7 +10,7 @@ import com.example.newtodo.todo.entity.Todo
 import com.example.newtodo.todo.entity.TodoStatus
 import com.example.newtodo.todo.entity.modify
 import com.example.newtodo.todo.repository.TodoCardRepository
-import com.example.newtodo.todo.repository.TodoRepository
+import com.example.newtodo.todo.repository.todo.TodoRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service
 @Service
 class TodoService(
     private val todoCardRepository: TodoCardRepository,
-    private val todoRepository: TodoRepository
+    private val todoRepository: TodoRepository,
 ) {
     //1. 할일 전체 조회
     fun getTodoList(todoCardId: Long): List<TodoResponse> {
@@ -33,6 +34,7 @@ class TodoService(
     }
      */
     //2. 할일 하나 조회 & 하나 조회 시 댓글 출력
+    @StopWatch
     fun getTodo(todoCardId: Long, todoId: Long): TodoResponse {
         val todo = todoRepository.findByIdOrNull(todoId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
         return if (todo.todoCard.id==todoCardId) {
@@ -52,7 +54,7 @@ class TodoService(
     fun createTodo(
         todoCardId: Long,
         request: TodoRequest
-    ): TodoResponse {
+    ): TodoResponse{
         val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
         val todo = Todo(
             title = request.title,
@@ -84,6 +86,20 @@ class TodoService(
         val todo = todoRepository.findByIdOrNull(todoId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
         return if (todoCardId==todo.todoCard.id){
             todoRepository.delete(todo)
+        }
+        else throw IllegalArgumentException("대상 없음")
+    }
+
+    //6. 할일 검색하기
+    fun searchTodo(
+        todoCardId: Long,
+        title: String
+    ): List<TodoResponse> {
+        val todo = todoRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
+        return if(todoCardId==todo.todoCard.id) {
+            todoRepository
+                .searchTodoListByTitle(title)
+                .map { TodoResponse.from(it) }
         }
         else throw IllegalArgumentException("대상 없음")
     }

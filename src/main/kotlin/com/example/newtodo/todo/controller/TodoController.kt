@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -22,10 +23,13 @@ class TodoController (
     private val todoService: TodoService
 ) {
     //1. 할일 전체 조회
+    /*
     @GetMapping
     fun getTodoList(@PathVariable todoCardId: Long): ResponseEntity<List<TodoResponse>> {
         return status(HttpStatus.OK).body(todoService.getTodoList(todoCardId))
     }
+
+     */
 
     //2. 할일 하나 조회 & 하나 조회 시 댓글 출력
     @GetMapping("/{todoId}")
@@ -54,7 +58,7 @@ class TodoController (
         return status(HttpStatus.OK).body(todoService.modifyTodo(todoCardId,todoId,request))
     }
 
-    //4. 할일 삭제하기
+    //5. 할일 삭제하기
     @DeleteMapping("/{todoId}")
     fun deleteTodo(
         @PathVariable todoCardId: Long,
@@ -62,6 +66,16 @@ class TodoController (
     ): ResponseEntity<Unit> {
         todoService.deleteTodo(todoCardId,todoId)
         return status(HttpStatus.NO_CONTENT).build()
+    }
+
+    //6. 할일 검색하기
+    @GetMapping
+    fun searchTodo(
+        @PathVariable todoCardId : Long,
+        @RequestParam (name = "title") title : String
+    ) : ResponseEntity<List<TodoResponse>>{
+        return status(HttpStatus.OK).body(todoService.searchTodo(todoCardId,title))
+
     }
 
 }

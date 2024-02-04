@@ -6,7 +6,7 @@ import com.example.newtodo.todo.dto.CommentRequest
 import com.example.newtodo.todo.dto.CommentResponse
 import com.example.newtodo.todo.entity.Comment
 import com.example.newtodo.todo.repository.CommentRepository
-import com.example.newtodo.todo.repository.TodoRepository
+import com.example.newtodo.todo.repository.todo.TodoRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
