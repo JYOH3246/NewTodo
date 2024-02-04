@@ -8,7 +8,7 @@ import jakarta.persistence.*
 class TodoCard(
     @Column(name = "title")
     var title: String
-): BaseTimeEntity() {
+) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null

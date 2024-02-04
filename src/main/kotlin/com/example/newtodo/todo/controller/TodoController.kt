@@ -6,20 +6,12 @@ import com.example.newtodo.todo.dto.TodoResponse
 import com.example.newtodo.todo.service.TodoService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.http.ResponseEntity.*
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.ResponseEntity.status
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/todoCards/{todoCardId}/todos")
-class TodoController (
+class TodoController(
     private val todoService: TodoService
 ) {
     //1. 할일 전체 조회
@@ -33,10 +25,11 @@ class TodoController (
 
     //2. 할일 하나 조회 & 하나 조회 시 댓글 출력
     @GetMapping("/{todoId}")
-    fun getTodo(@PathVariable todoCardId: Long,
-                @PathVariable todoId: Long
+    fun getTodo(
+        @PathVariable todoCardId: Long,
+        @PathVariable todoId: Long
     ): ResponseEntity<TodoResponse> {
-        return status(HttpStatus.OK).body(todoService.getTodo(todoCardId,todoId))
+        return status(HttpStatus.OK).body(todoService.getTodo(todoCardId, todoId))
     }
 
     //3. 할일 추가하기
@@ -45,7 +38,7 @@ class TodoController (
         @PathVariable todoCardId: Long,
         @RequestBody request: TodoRequest
     ): ResponseEntity<TodoResponse> {
-        return status(HttpStatus.CREATED).body(todoService.createTodo(todoCardId,request))
+        return status(HttpStatus.CREATED).body(todoService.createTodo(todoCardId, request))
     }
 
     //4. 할일 수정하기
@@ -54,8 +47,8 @@ class TodoController (
         @PathVariable todoCardId: Long,
         @PathVariable todoId: Long,
         @RequestBody request: ModifyTodoRequest
-    ) : ResponseEntity<TodoResponse>{
-        return status(HttpStatus.OK).body(todoService.modifyTodo(todoCardId,todoId,request))
+    ): ResponseEntity<TodoResponse> {
+        return status(HttpStatus.OK).body(todoService.modifyTodo(todoCardId, todoId, request))
     }
 
     //5. 할일 삭제하기
@@ -64,17 +57,17 @@ class TodoController (
         @PathVariable todoCardId: Long,
         @PathVariable todoId: Long
     ): ResponseEntity<Unit> {
-        todoService.deleteTodo(todoCardId,todoId)
+        todoService.deleteTodo(todoCardId, todoId)
         return status(HttpStatus.NO_CONTENT).build()
     }
 
     //6. 할일 검색하기
     @GetMapping
     fun searchTodo(
-        @PathVariable todoCardId : Long,
-        @RequestParam (name = "title") title : String
-    ) : ResponseEntity<List<TodoResponse>>{
-        return status(HttpStatus.OK).body(todoService.searchTodo(todoCardId,title))
+        @PathVariable todoCardId: Long,
+        @RequestParam(name = "title") title: String
+    ): ResponseEntity<List<TodoResponse>> {
+        return status(HttpStatus.OK).body(todoService.searchTodo(todoCardId, title))
 
     }
 

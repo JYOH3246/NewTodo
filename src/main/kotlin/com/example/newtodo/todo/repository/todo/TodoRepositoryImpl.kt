@@ -13,7 +13,7 @@ class TodoRepositoryImpl : QueryDslSupport(), CustomTodoRepository {
     /*
     select * from todo where title like "%검색어%"
      */
-    override fun searchTodoListByTitle(title : String) :List<Todo> {
+    override fun searchTodoListByTitle(title: String): List<Todo> {
         return queryFactory.selectFrom(todo)
             .where(todo.title.containsIgnoreCase(title))
             .fetch()

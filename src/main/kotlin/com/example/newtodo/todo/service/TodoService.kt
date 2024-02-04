@@ -37,10 +37,9 @@ class TodoService(
     @StopWatch
     fun getTodo(todoCardId: Long, todoId: Long): TodoResponse {
         val todo = todoRepository.findByIdOrNull(todoId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
-        return if (todo.todoCard.id==todoCardId) {
+        return if (todo.todoCard.id == todoCardId) {
             todo.let { TodoResponse.from(it) }
-        }
-        else throw IllegalArgumentException("대상 없음")
+        } else throw IllegalArgumentException("대상 없음")
     }
 
     /*
@@ -54,8 +53,9 @@ class TodoService(
     fun createTodo(
         todoCardId: Long,
         request: TodoRequest
-    ): TodoResponse{
-        val todoCard = todoCardRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
+    ): TodoResponse {
+        val todoCard =
+            todoCardRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
         val todo = Todo(
             title = request.title,
             content = request.content,
@@ -71,7 +71,7 @@ class TodoService(
         todoCardId: Long,
         todoId: Long,
         request: ModifyTodoRequest
-    ) : TodoResponse {
+    ): TodoResponse {
         val todo = todoRepository.findByIdOrNull(todoId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
         todo.modify(request)
         return todo.let { TodoResponse.from(it) }
@@ -84,10 +84,9 @@ class TodoService(
         todoId: Long
     ) {
         val todo = todoRepository.findByIdOrNull(todoId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
-        return if (todoCardId==todo.todoCard.id){
+        return if (todoCardId == todo.todoCard.id) {
             todoRepository.delete(todo)
-        }
-        else throw IllegalArgumentException("대상 없음")
+        } else throw IllegalArgumentException("대상 없음")
     }
 
     //6. 할일 검색하기
@@ -96,11 +95,10 @@ class TodoService(
         title: String
     ): List<TodoResponse> {
         val todo = todoRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
-        return if(todoCardId==todo.todoCard.id) {
+        return if (todoCardId == todo.todoCard.id) {
             todoRepository
                 .searchTodoListByTitle(title)
                 .map { TodoResponse.from(it) }
-        }
-        else throw IllegalArgumentException("대상 없음")
+        } else throw IllegalArgumentException("대상 없음")
     }
 }

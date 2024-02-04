@@ -1,6 +1,6 @@
 package com.example.newtodo.todo.dto
 
-data class TodoRequest (
+data class TodoRequest(
     val title: String,
-    val content : String,
+    val content: String,
 )

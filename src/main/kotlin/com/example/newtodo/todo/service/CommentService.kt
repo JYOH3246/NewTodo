@@ -46,7 +46,8 @@ class CommentService(
         commentId: Long,
         request: CommentRequest
     ): CommentResponse {
-        val comment = commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
+        val comment =
+            commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
         comment.content = request.content
         return comment.let { CommentResponse.from(it) }
     }
@@ -58,7 +59,8 @@ class CommentService(
         todoId: Long,
         commentId: Long
     ) {
-        val comment = commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
+        val comment =
+            commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
         commentRepository.delete(comment)
     }
 }

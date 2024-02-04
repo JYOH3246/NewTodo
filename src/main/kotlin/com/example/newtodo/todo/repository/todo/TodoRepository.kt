@@ -4,5 +4,5 @@ import com.example.newtodo.todo.entity.Todo
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface TodoRepository : JpaRepository<Todo, Long>, CustomTodoRepository {
-    fun findAllByTodoCardId(id:Long) : List<Todo>?
+    fun findAllByTodoCardId(id: Long): List<Todo>?
 }

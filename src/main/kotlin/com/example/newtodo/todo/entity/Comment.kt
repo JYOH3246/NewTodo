@@ -12,7 +12,7 @@ class Comment(
     @JoinColumn(name = "todoId")
     val todo: Todo
 
-): BaseTimeEntity()  {
+) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null
