@@ -95,12 +95,13 @@ class TodoService(
     fun searchTodo(
         todoCardId: Long,
         title: String,
+        todoStatus: TodoStatus,
         pageable: Pageable
     ): Page<TodoResponse> {
         val todo = todoRepository.findByIdOrNull(todoCardId) ?: throw BaseException(BaseResponseCode.INVALID_TODO_CARD)
         return if (todoCardId == todo.todoCard.id) {
             todoRepository
-                .searchTodoListByTitleWithPageable(pageable, title)
+                .searchTodoListByTitleWithPageable(pageable, title, todoStatus)
                 .map { TodoResponse.from(it) }
         } else throw IllegalArgumentException("대상 없음")
     }

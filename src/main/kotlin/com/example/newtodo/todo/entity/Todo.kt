@@ -15,7 +15,7 @@ class Todo(
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     var status: TodoStatus,
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "todoCardId")
     val todoCard: TodoCard,
     // 요구사항 : 댓글이 들어가면, 양방향 참조가 생길 것 같다!

@@ -3,6 +3,7 @@ package com.example.newtodo.todo.controller
 import com.example.newtodo.todo.dto.ModifyTodoRequest
 import com.example.newtodo.todo.dto.TodoRequest
 import com.example.newtodo.todo.dto.TodoResponse
+import com.example.newtodo.todo.entity.TodoStatus
 import com.example.newtodo.todo.service.TodoService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -69,9 +70,10 @@ class TodoController(
     fun searchTodo(
         @PageableDefault(size = 3, sort = ["id"]) pageable: Pageable,
         @PathVariable todoCardId: Long,
+        @RequestParam todoStatus: TodoStatus,
         @RequestParam(name = "title") title: String
     ): ResponseEntity<Page<TodoResponse>> {
-        return status(HttpStatus.OK).body(todoService.searchTodo(todoCardId, title, pageable))
+        return status(HttpStatus.OK).body(todoService.searchTodo(todoCardId, title, todoStatus, pageable))
 
     }
 
