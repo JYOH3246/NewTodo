@@ -1,5 +1,6 @@
 package com.example.newtodo.todo.entity
 
+import com.example.newtodo.common.audit.BaseTimeEntity
 import jakarta.persistence.*
 
 @Entity
@@ -11,7 +12,7 @@ class Comment(
     @JoinColumn(name = "todoId")
     val todo: Todo
 
-)  {
+) : BaseTimeEntity() {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null

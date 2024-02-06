@@ -6,7 +6,7 @@ import com.example.newtodo.todo.dto.CommentRequest
 import com.example.newtodo.todo.dto.CommentResponse
 import com.example.newtodo.todo.entity.Comment
 import com.example.newtodo.todo.repository.CommentRepository
-import com.example.newtodo.todo.repository.TodoRepository
+import com.example.newtodo.todo.repository.todo.TodoRepository
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -46,7 +46,8 @@ class CommentService(
         commentId: Long,
         request: CommentRequest
     ): CommentResponse {
-        val comment = commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
+        val comment =
+            commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
         comment.content = request.content
         return comment.let { CommentResponse.from(it) }
     }
@@ -58,7 +59,8 @@ class CommentService(
         todoId: Long,
         commentId: Long
     ) {
-        val comment = commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
+        val comment =
+            commentRepository.findByIdOrNull(commentId) ?: throw BaseException(BaseResponseCode.INVALID_COMMENT)
         commentRepository.delete(comment)
     }
 }
