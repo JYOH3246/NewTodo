@@ -1,10 +1,13 @@
 spring:
   datasource:
+    #url: jdbc:postgresql://3.37.6.128:5432/devdb
+    #username: devuser
+    #password: 1234
     url: jdbc:postgresql://localhost:5432/
     username: postgres
     password: FrBrUkwv2ek0nx10
   jpa:
-    open-in-view: true
+    open-in-view: false
     hibernate:
       ddl-auto: update
     properties:
@@ -12,6 +15,24 @@ spring:
         show_sql: true
         format_sql: false
         highlight_sql: true
+  servlet:
+    multipart:
+      enabled: true # 멀티파트 업로드 지원여부 (default: true)
+      file-size-threshold: 0B # 파일을 디스크에 저장하지 않고 메모리에 저장하는 최소 크기 (default: 0B)
+      location: ${java.io.tmpdir} # 업로드된 파일이 임시로 저장되는 디스크 위치 (default: WAS가 결정)
+      max-file-size: 100MB # 한개 파일의 최대 사이즈 (default: 1MB)
+      max-request-size: 100MB # 한개 요청의 최대 사이즈 (default: 10MB)
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 70127047663-ekkl1uu4h3pvcrsddbrtg508idc80oh9.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            scope:
+              - profile
+              - email
 logging:
   level:
     org:
@@ -22,3 +43,21 @@ logging:
             bind: trace
       springframework:
         security: debug
+cloud:
+  aws:
+    s3:
+      bucket: myjy3246bucket
+    credentials:
+      access-key: AKIAZQ3DQK5JS4G55JER
+      secret-key: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+auth:
+  jwt:
+    issuer: team.sparta.com
+    secret: PO4c8z41Hia5gJG3oeuFJMRYBB4Ws4aZ
+    accessTokenExpirationHour: 168
+
+

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/todoCards")
 class TodoCardController
     (
-    private val todoCardService: TodoCardService
+    private val todoCardService: TodoCardService,
 ) {
     //1. 전체조회
     @GetMapping
