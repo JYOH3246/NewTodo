@@ -39,9 +39,7 @@ class TodoService(
     @StopWatch
     fun getTodo(todoCardId: Long, todoId: Long): TodoResponse {
         val todo = todoRepository.findByIdOrNull(todoId) ?: throw BaseException(BaseResponseCode.INVALID_TODO)
-        return if (todo.todoCard.id == todoCardId) {
-            todo.let { TodoResponse.from(it) }
-        } else throw IllegalArgumentException("대상 없음")
+        return todo.let { TodoResponse.from(it) }
     }
 
     /*

@@ -6,7 +6,6 @@ import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import java.io.InputStream
-import java.time.LocalDateTime
 
 
 @Service
@@ -30,9 +29,7 @@ class AwsS3Service(
         val responseList = ArrayList<UploadResponse>()
         for ((index, file) in files.withIndex()) {
             val aws = Aws(
-                userId = userId,
                 fileSize = file.size.toInt(),
-                uploadDate = LocalDateTime.now(),
                 url = imageUrls[index]
             )
             responseList.add(aws.let { UploadResponse.from(it) })

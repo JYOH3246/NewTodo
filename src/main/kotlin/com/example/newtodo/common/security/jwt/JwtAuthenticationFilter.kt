@@ -33,7 +33,7 @@ class JwtAuthenticationFilter(
                     val email = it.payload.get("email", String::class.java)
                     val role = it.payload.get("role", String::class.java)
 
-                    val principal = if (role == "AUTH_CUSTOMER") {
+                    val principal = if (role == "OAUTH_MEMBER") {
                         Oauth2UserPrincipal(
                             id = userId,
                             email = email,
