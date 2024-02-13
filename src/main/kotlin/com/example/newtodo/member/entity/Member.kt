@@ -14,7 +14,7 @@ class Member(
     @Column(name = "nickname")
     var nickname: String,
     @Column(name = "phoneNumber")
-    var phoneNumber: String,
+    var phoneNumber: String?,
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     val role: MemberRole,
